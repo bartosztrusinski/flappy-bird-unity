@@ -14,7 +14,7 @@ public class BirdMovement : MonoBehaviour
 
   private CharacterController Controller;
   private Vector3 Velocity;
-  private bool Cooldown;
+  private bool IsOnCooldown;
   private GameObject LookAt;
   public GameObject Cube1;
   public GameObject Cube2;
@@ -26,8 +26,8 @@ public class BirdMovement : MonoBehaviour
   {
     if (collider.CompareTag("Score"))
     {
-      Score++;
       pointSound.Play();
+      Score++;
     }
 
     if (collider.CompareTag("Obstacle"))
@@ -46,13 +46,12 @@ public class BirdMovement : MonoBehaviour
   {
     ScoreText.text = Score.ToString();
 
-    Velocity.y += -15 * Time.deltaTime;
+    Velocity.y += -40 * Time.deltaTime;
 
-    if (Input.GetKey(KeyCode.Space) && Cooldown == false)
+    if (Input.GetKey(KeyCode.Space) && IsOnCooldown == false)
     {
-      Cooldown = true;
-      Velocity.y = 0;
-      Velocity.y = Mathf.Sqrt(60);
+      IsOnCooldown = true;
+      Velocity.y = 16f;
       BirdAnimator.SetBool("Fly", true);
       swooshSound.Play();
       StartCoroutine(CooldownRefresh());
@@ -61,12 +60,12 @@ public class BirdMovement : MonoBehaviour
     if (Velocity.y > 0)
     {
       LookAt = Cube1;
-      Speed = 5;
+      Speed = 8;
     }
     else
     {
       LookAt = Cube2;
-      Speed = 10;
+      Speed = 16;
     }
 
     Quaternion lookOnLook =
@@ -80,8 +79,8 @@ public class BirdMovement : MonoBehaviour
 
   private IEnumerator CooldownRefresh()
   {
-    yield return new WaitForSeconds(0.3f);
-    Cooldown = false;
+    yield return new WaitForSeconds(0.4f);
+    IsOnCooldown = false;
     BirdAnimator.SetBool("Fly", false);
   }
 }
