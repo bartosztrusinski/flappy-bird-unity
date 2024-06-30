@@ -42,7 +42,6 @@ public class BirdMovement : MonoBehaviour
 
   private void Restart()
   {
-    Debug.Log("Restart");
     Time.timeScale = 1f;
     SceneManager.LoadScene("Scene");
   }
@@ -65,13 +64,18 @@ public class BirdMovement : MonoBehaviour
 
     Velocity.y += -40 * Time.deltaTime;
 
-    if (Input.GetKey(KeyCode.Space) && IsOnCooldown == false)
+    if (Input.touchCount > 0 && !IsOnCooldown)
     {
-      IsOnCooldown = true;
-      Velocity.y = 16f;
-      BirdAnimator.SetBool("Fly", true);
-      swooshSound.Play();
-      StartCoroutine(CooldownRefresh());
+      Touch touch = Input.GetTouch(0);
+
+      if (touch.phase == TouchPhase.Began)
+      {
+        IsOnCooldown = true;
+        Velocity.y = 16f;
+        BirdAnimator.SetBool("Fly", true);
+        swooshSound.Play();
+        StartCoroutine(CooldownRefresh());
+      }
     }
 
     if (Velocity.y > 0)
