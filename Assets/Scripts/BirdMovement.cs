@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -15,6 +14,7 @@ public class BirdMovement : MonoBehaviour
   private CharacterController Controller;
   private Vector3 Velocity;
   private bool IsOnCooldown;
+  private bool IsDead;
   private GameObject LookAt;
   public GameObject Cube1;
   public GameObject Cube2;
@@ -24,6 +24,8 @@ public class BirdMovement : MonoBehaviour
 
   private void OnTriggerEnter(Collider collider)
   {
+    if (IsDead) return;
+
     if (collider.CompareTag("Score"))
     {
       pointSound.Play();
@@ -32,9 +34,24 @@ public class BirdMovement : MonoBehaviour
 
     if (collider.CompareTag("Obstacle"))
     {
-      hitSound.Play();
-      SceneManager.LoadScene("Scene");
+      IsDead = true;
+      Fall();
+      Invoke(nameof(Restart), 0.1f);
     }
+  }
+
+  private void Restart()
+  {
+    Debug.Log("Restart");
+    Time.timeScale = 1f;
+    SceneManager.LoadScene("Scene");
+  }
+
+  private void Fall()
+  {
+    Time.timeScale = 0.05f;
+    hitSound.Play();
+    Velocity.y = -40f;
   }
 
   private void Start()
