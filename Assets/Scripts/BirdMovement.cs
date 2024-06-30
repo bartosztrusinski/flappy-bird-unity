@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class BirdMovement : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class BirdMovement : MonoBehaviour
   public AudioSource swooshSound;
   public AudioSource hitSound;
   public AudioSource pointSound;
+
+    public GameObject GameOverScreen;
+    public GameObject PauseButton;
 
   private CharacterController Controller;
   private Vector3 Velocity;
@@ -20,6 +24,10 @@ public class BirdMovement : MonoBehaviour
   public GameObject Cube2;
   private int Speed;
   private int Score;
+    private static int BestScore;
+
+    public Text tscore;
+    public Text tbscore;
 
 
   private void OnTriggerEnter(Collider collider)
@@ -36,13 +44,23 @@ public class BirdMovement : MonoBehaviour
     {
       IsDead = true;
       Fall();
-      Invoke(nameof(Restart), 0.1f);
+            GameOverScreen.SetActive(true);
+            PauseButton.SetActive(false);
+            Time.timeScale = 0f;
+            if(BestScore < Score)
+            {
+                BestScore = Score;
+            }
+            tscore.text = "Your Score: " + Score.ToString();
+            tbscore.text = "Best Score: " + BestScore.ToString();
     }
   }
 
-  private void Restart()
+  public void Restart()
   {
-    Time.timeScale = 1f;
+    GameOverScreen.SetActive(false);
+        PauseButton.SetActive(true);
+        Time.timeScale = 1f;
     SceneManager.LoadScene("Scene");
   }
 
