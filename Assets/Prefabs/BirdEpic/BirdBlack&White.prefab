@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3278602891913205087, guid: cc2c6e537cfda8e438786375b5b1335d, type: 3}
       propertyPath: m_Name
-      value: BirdWhite&Black
+      value: BirdBlack&White
       objectReference: {fileID: 0}
     - target: {fileID: 7054931299630263318, guid: cc2c6e537cfda8e438786375b5b1335d, type: 3}
       propertyPath: m_Materials.Array.data[0]
