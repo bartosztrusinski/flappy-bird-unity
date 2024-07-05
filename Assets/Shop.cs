@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Shop : MonoBehaviour
@@ -7,11 +8,15 @@ public class Shop : MonoBehaviour
   public GameObject previousButton;
 
   private int currentTier = 0;
+  private int coins;
+  public TextMeshProUGUI coinsText;
 
   void Start()
   {
+    coins = PlayerPrefs.GetInt("Coins", 0);
     skinTiers[currentTier].SetActive(true);
     previousButton.SetActive(false);
+    UpdateCoinsLabel();
   }
 
   public void ShowNextTier()
@@ -52,5 +57,21 @@ public class Shop : MonoBehaviour
   public bool IsFirstTier()
   {
     return currentTier == 0;
+  }
+
+  public void UseCoins(int cost)
+  {
+    coins -= cost;
+    UpdateCoinsLabel();
+  }
+
+  private void UpdateCoinsLabel()
+  {
+    coinsText.text = "Coins: " + coins.ToString();
+  }
+
+  public int GetCoins()
+  {
+    return coins;
   }
 }
