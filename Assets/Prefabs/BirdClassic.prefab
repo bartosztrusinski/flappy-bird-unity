@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: deda145431667bb40a665a221334502e, type: 3}
       propertyPath: m_Name
-      value: FlappyBird3D
+      value: BirdClassic
       objectReference: {fileID: 0}
     - target: {fileID: 6443852219947562045, guid: deda145431667bb40a665a221334502e, type: 3}
       propertyPath: m_Name
@@ -184,8 +184,12 @@ MonoBehaviour:
   swooshSound: {fileID: 857571099214920476}
   hitSound: {fileID: 8874540001284924747}
   pointSound: {fileID: 9108487842061231360}
+  GameOverScreen: {fileID: 0}
+  PauseButton: {fileID: 0}
   Cube1: {fileID: 0}
   Cube2: {fileID: 0}
+  tscore: {fileID: 0}
+  tbscore: {fileID: 0}
 --- !u!82 &857571099214920476
 AudioSource:
   m_ObjectHideFlags: 0
@@ -195,10 +199,10 @@ AudioSource:
   m_GameObject: {fileID: 3278602891913205087}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8633578832248650121, guid: adb83a7715e796e458fda86b89ce2b71, type: 2}
   m_audioClip: {fileID: 8300000, guid: 05b1000d2d80f4f4b9beb1ce383e1abc, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -291,10 +295,10 @@ AudioSource:
   m_GameObject: {fileID: 3278602891913205087}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8633578832248650121, guid: adb83a7715e796e458fda86b89ce2b71, type: 2}
   m_audioClip: {fileID: 8300000, guid: 31457cddebf1835488fc7d56c604bbb6, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -387,10 +391,10 @@ AudioSource:
   m_GameObject: {fileID: 3278602891913205087}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -8633578832248650121, guid: adb83a7715e796e458fda86b89ce2b71, type: 2}
   m_audioClip: {fileID: 8300000, guid: 43e0188b0c692bd48997770710aa00c5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
