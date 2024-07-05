@@ -1,47 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Pausemenu : MonoBehaviour
+public class PauseMenu : MonoBehaviour
 {
+  public void ResumeResume()
+  {
+    Time.timeScale = 1f;
+  }
 
-    
+  public void PausePause()
+  {
+    Time.timeScale = 0f;
+  }
 
-    
+  public void LoadMenu()
+  {
+    Time.timeScale = 1f;
+    SceneManager.LoadScene("Menu3D");
 
-    private void Update()
-    {
-        
-    }
+  }
 
-
-    public void ResumeResume()
-    {
-       
-        Time.timeScale = 1f;
-        
-    }
-
-    public void PausePause()
-    {
-       
-        Time.timeScale = 0f;
-        
-    }
-
-    public void Loadmenu()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-        
-    }
-
-    public void Quitgame()
-    {
-        Debug.Log("Quit Game");
-        Application.Quit();
-
-    }
-
+  public void QuitGame()
+  {
+    Debug.Log("Quit Game");
+    Application.Quit();
+  }
 }
