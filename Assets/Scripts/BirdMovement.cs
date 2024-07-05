@@ -1,87 +1,125 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class BirdMovement : MonoBehaviour
 {
-    private CharacterController Controller;
-    private Vector3 Velocity;
-    private bool Cooldown;
+  public Animator BirdAnimator;
+  public TextMeshProUGUI ScoreText;
+  public AudioSource swooshSound;
+  public AudioSource hitSound;
+  public AudioSource pointSound;
 
-    private GameObject LookAt;
-    public GameObject Cube1;
-    public GameObject Cube2;
-    private int Speed;
+    public GameObject GameOverScreen;
+    public GameObject PauseButton;
 
-    public Animator BirdAnimator;
+  private CharacterController Controller;
+  private Vector3 Velocity;
+  private bool IsOnCooldown;
+  private bool IsDead;
+  private GameObject LookAt;
+  public GameObject Cube1;
+  public GameObject Cube2;
+  private int Speed;
+  private int Score;
+    private static int BestScore;
 
-    public TextMeshProUGUI ScoreText;
-    private int Score;
+    public Text tscore;
+    public Text tbscore;
 
-    public AudioSource audio;
-    public AudioSource audio2;
 
-    private void OnTriggerEnter(Collider other)
+  private void OnTriggerEnter(Collider collider)
+  {
+    if (IsDead) return;
+
+    if (collider.CompareTag("Score"))
     {
-        if(other.tag == "Score")
-        {
-            Score++;
-            audio2.Play();
-        }
-
-        if(other.tag == "Obstacle")
-        {
-            SceneManager.LoadScene("SampleScene");
-        }
+      pointSound.Play();
+      Score++;
     }
 
-    private void Start()
+    if (collider.CompareTag("Obstacle"))
     {
-        Controller = gameObject.GetComponent<CharacterController>();
+      IsDead = true;
+      Fall();
+            GameOverScreen.SetActive(true);
+            PauseButton.SetActive(false);
+            Time.timeScale = 0f;
+            if(BestScore < Score)
+            {
+                BestScore = Score;
+            }
+            tscore.text = "Your Score: " + Score.ToString();
+            tbscore.text = "Best Score: " + BestScore.ToString();
+    }
+  }
+
+  public void Restart()
+  {
+    GameOverScreen.SetActive(false);
+        PauseButton.SetActive(true);
+        Time.timeScale = 1f;
+    SceneManager.LoadScene("Scene");
+  }
+
+  private void Fall()
+  {
+    Time.timeScale = 0.05f;
+    hitSound.Play();
+    Velocity.y = -40f;
+  }
+
+  private void Start()
+  {
+    Controller = gameObject.GetComponent<CharacterController>();
+  }
+
+  private void Update()
+  {
+    ScoreText.text = Score.ToString();
+
+    Velocity.y += -40 * Time.deltaTime;
+
+    if (Input.touchCount > 0 && !IsOnCooldown)
+    {
+      Touch touch = Input.GetTouch(0);
+
+      if (touch.phase == TouchPhase.Began)
+      {
+        IsOnCooldown = true;
+        Velocity.y = 16f;
+        BirdAnimator.SetBool("Fly", true);
+        swooshSound.Play();
+        StartCoroutine(CooldownRefresh());
+      }
     }
 
-    private void Update()
+    if (Velocity.y > 0)
     {
-        ScoreText.text = Score.ToString();
-
-        Velocity.y += -15 * Time.deltaTime;
-
-        if (Input.GetKey("space") && Cooldown == false)
-        {
-            Cooldown = true;
-            Velocity.y = 0;
-            Velocity.y = Mathf.Sqrt(60);
-            BirdAnimator.SetBool("Fly", true);
-            StartCoroutine(CooldownRefresh());
-            audio.Play();
-        }
-
-        if(Velocity.y > 0)
-        {
-            LookAt = Cube1;
-            Speed = 5;
-        }
-        else
-        {
-            LookAt = Cube2;
-            Speed = 10;
-        }
-
-        Quaternion lookOnLook =
-        Quaternion.LookRotation(-LookAt.transform.position - transform.position);
-
-        transform.rotation =
-        Quaternion.Slerp(transform.rotation, lookOnLook, Speed * Time.deltaTime);
-
-        Controller.Move(Velocity * Time.deltaTime);
+      LookAt = Cube1;
+      Speed = 8;
+    }
+    else
+    {
+      LookAt = Cube2;
+      Speed = 16;
     }
 
-    private IEnumerator CooldownRefresh()
-    {
-        yield return new WaitForSeconds(0.3f);
-        Cooldown = false;
-        BirdAnimator.SetBool("Fly", false);
-    }
+    Quaternion lookOnLook =
+    Quaternion.LookRotation(-LookAt.transform.position - transform.position);
+
+    transform.rotation =
+    Quaternion.Slerp(transform.rotation, lookOnLook, Speed * Time.deltaTime);
+
+    Controller.Move(Velocity * Time.deltaTime);
+  }
+
+  private IEnumerator CooldownRefresh()
+  {
+    yield return new WaitForSeconds(0.4f);
+    IsOnCooldown = false;
+    BirdAnimator.SetBool("Fly", false);
+  }
 }
