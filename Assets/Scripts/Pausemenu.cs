@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-  public void ResumeResume()
+  public void ResumeGame()
   {
     Time.timeScale = 1f;
   }
 
-  public void PausePause()
+  public void PauseGame()
   {
     Time.timeScale = 0f;
   }
