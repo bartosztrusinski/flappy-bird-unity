@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
 
 public class BirdMovement : MonoBehaviour
 {
@@ -11,9 +9,7 @@ public class BirdMovement : MonoBehaviour
   public AudioSource swooshSound;
   public AudioSource hitSound;
   public AudioSource pointSound;
-
-    public GameObject GameOverScreen;
-    public GameObject PauseButton;
+  public GameOverMenu gameOverMenu;
 
   private CharacterController Controller;
   private Vector3 Velocity;
@@ -24,11 +20,6 @@ public class BirdMovement : MonoBehaviour
   public GameObject Cube2;
   private int Speed;
   private int Score;
-    private static int BestScore;
-
-    public Text tscore;
-    public Text tbscore;
-
 
   private void OnTriggerEnter(Collider collider)
   {
@@ -44,24 +35,13 @@ public class BirdMovement : MonoBehaviour
     {
       IsDead = true;
       Fall();
-            GameOverScreen.SetActive(true);
-            PauseButton.SetActive(false);
-            Time.timeScale = 0f;
-            if(BestScore < Score)
-            {
-                BestScore = Score;
-            }
-            tscore.text = "Your Score: " + Score.ToString();
-            tbscore.text = "Best Score: " + BestScore.ToString();
+      Invoke(nameof(RestartGame), 0.05f);
     }
   }
 
-  public void Restart()
+  private void RestartGame()
   {
-    GameOverScreen.SetActive(false);
-        PauseButton.SetActive(true);
-        Time.timeScale = 1f;
-    SceneManager.LoadScene("Scene");
+    gameOverMenu.GameOver();
   }
 
   private void Fall()
@@ -73,7 +53,8 @@ public class BirdMovement : MonoBehaviour
 
   private void Start()
   {
-    Controller = gameObject.GetComponent<CharacterController>();
+        Controller = gameObject.GetComponent<CharacterController>();
+        BirdAnimator = gameObject.GetComponent<Animator>();
   }
 
   private void Update()
@@ -121,5 +102,10 @@ public class BirdMovement : MonoBehaviour
     yield return new WaitForSeconds(0.4f);
     IsOnCooldown = false;
     BirdAnimator.SetBool("Fly", false);
+  }
+
+  public int GetScore()
+  {
+    return Score;
   }
 }
