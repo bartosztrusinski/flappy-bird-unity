@@ -1,11 +1,10 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class GameOverMenu : MonoBehaviour
 {
-  private static int bestScore;
+  private int bestScore;
 
   public GameObject GameOverPanel;
   public GameObject PauseButton;
@@ -15,7 +14,7 @@ public class GameOverMenu : MonoBehaviour
 
   public TextMeshProUGUI gameScore;
 
-  void Start()
+  void Awake()
   {
     bestScore = PlayerPrefs.GetInt("BestScore", 0);
   }
@@ -30,7 +29,7 @@ public class GameOverMenu : MonoBehaviour
 
     if (score > bestScore)
     {
-      SetNewBestScore(score);
+      UpdateBestScore(score);
     }
 
     UpdateText(score);
@@ -42,7 +41,7 @@ public class GameOverMenu : MonoBehaviour
     bestScoreText.text = "Best Score: " + bestScore.ToString();
   }
 
-  private void SetNewBestScore(int newBestScore)
+  private void UpdateBestScore(int newBestScore)
   {
     bestScore = newBestScore;
     PlayerPrefs.SetInt("BestScore", newBestScore);
@@ -50,8 +49,6 @@ public class GameOverMenu : MonoBehaviour
 
   public void RestartGame()
   {
-    // GameOverPanel.SetActive(false);
-    // PauseButton.SetActive(true);
     Time.timeScale = 1f;
     SceneManager.LoadScene("Game");
   }
