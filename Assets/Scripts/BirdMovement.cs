@@ -25,6 +25,11 @@ public class BirdMovement : MonoBehaviour
   {
     if (IsDead) return;
 
+    if (collider.CompareTag("Coin"))
+    {
+      gameOverMenu.CollectCoin();
+    }
+
     if (collider.CompareTag("Score"))
     {
       pointSound.Play();
@@ -53,8 +58,8 @@ public class BirdMovement : MonoBehaviour
 
   private void Start()
   {
-        Controller = gameObject.GetComponent<CharacterController>();
-        BirdAnimator = gameObject.GetComponent<Animator>();
+    Controller = gameObject.GetComponent<CharacterController>();
+    BirdAnimator = gameObject.GetComponent<Animator>();
   }
 
   private void Update()

@@ -43,14 +43,9 @@ public class Skins : MonoBehaviour
 
   public void UnlockSkin()
   {
-    if (buyingSkinIndex == -1)
-    {
-      Debug.LogError("No skin index set to unlock");
-      return;
-    }
+    if (buyingSkinIndex == -1) return;
 
     unlockedSkinIndices = unlockedSkinIndices.Append(buyingSkinIndex).ToArray();
-    Debug.Log($"Updated indices: {string.Join(",", unlockedSkinIndices)}, new skin index: {buyingSkinIndex}");
     PlayerPrefs.SetString("UnlockedSkinIndices", string.Join(",", unlockedSkinIndices));
     shop.UseCoins(skinCosts[buyingSkinIndex]);
     buyingSkinIndex = -1;
@@ -60,8 +55,6 @@ public class Skins : MonoBehaviour
   public void PromptUnlockSkin(int index)
   {
     buyingSkinIndex = index;
-
-    Debug.Log($"Buying skin for {skinCosts[index]}");
 
     if (shop.GetCoins() < skinCosts[index])
     {

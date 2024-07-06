@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 public class GameOverMenu : MonoBehaviour
 {
   private int bestScore;
+  private int coinsCollected;
 
   public GameObject GameOverPanel;
   public GameObject PauseButton;
 
   public TextMeshProUGUI scoreText;
   public TextMeshProUGUI bestScoreText;
+  public TextMeshProUGUI coinsText;
 
   public TextMeshProUGUI gameScore;
 
@@ -33,12 +35,16 @@ public class GameOverMenu : MonoBehaviour
     }
 
     UpdateText(score);
+
+    PlayerPrefs.SetInt("Coins", PlayerPrefs.GetInt("Coins", 0) + coinsCollected);
+    coinsCollected = 0;
   }
 
   private void UpdateText(int score)
   {
     scoreText.text = "Score: " + score.ToString();
     bestScoreText.text = "Best Score: " + bestScore.ToString();
+    coinsText.text = "Coins Collected: " + coinsCollected.ToString();
   }
 
   private void UpdateBestScore(int newBestScore)
@@ -51,5 +57,10 @@ public class GameOverMenu : MonoBehaviour
   {
     Time.timeScale = 1f;
     SceneManager.LoadScene("Game");
+  }
+
+  public void CollectCoin()
+  {
+    coinsCollected++;
   }
 }
